@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openzaak-open-zaak
+  labels:
+    app.kubernetes.io/version: "1.6.0"
+    helm.sh/chart: open-zaak-0.8.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: open-zaak
+    app.kubernetes.io/instance: openzaak
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+    - host: "open-zaak.commonground.apps.digilab.network"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: openzaak-open-zaak-nginx
+                port:
+                  number: 80

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openzaak-open-zaak
+  labels:
+    app.kubernetes.io/version: "1.6.0"
+    helm.sh/chart: open-zaak-0.8.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: open-zaak
+    app.kubernetes.io/instance: openzaak
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: open-zaak
+    app.kubernetes.io/instance: openzaak

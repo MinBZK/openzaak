@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openzaak-open-zaak
+  labels:
+    app.kubernetes.io/version: "1.6.0"
+    helm.sh/chart: open-zaak-0.8.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: open-zaak
+    app.kubernetes.io/instance: openzaak
+data:
+  ALLOWED_HOSTS: "openzaak-open-zaak,openzaak-open-zaak.tn-openbsw-openzaak,open-zaak.commonground.apps.digilab.network"
+  CACHE_DEFAULT: "openzaak-redis-svc:6379/0"
+  CACHE_AXES: "openzaak-redis-svc:6379/0"
+  DB_NAME: "openzaak"
+  DB_HOST: "openzaak-postgres-db-rw"
+  DB_PORT: "5432"
+  DB_USER: "openzaak"
+  PGSSLMODE: "prefer"
+  DEBUG: "False"
+  NUM_PROXIES: "2"
+  EMAIL_HOST: "openzaak-mailcatcher-svc"
+  IS_HTTPS: "True"
+  JWT_EXPIRY: "3600"

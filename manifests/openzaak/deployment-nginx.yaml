@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openzaak-open-zaak-nginx
+  labels:
+    helm.sh/chart: open-zaak-0.8.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: open-zaak-nginx
+    app.kubernetes.io/instance: openzaak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: open-zaak-nginx
+      app.kubernetes.io/instance: openzaak
+  template:
+    metadata:
+      annotations:
+        checksum/configmap-nginx: 8d3a50e5742f531701efa7d84a471dd06b6001b363788a576ad694d4ba4455e7
+      labels:
+        app.kubernetes.io/name: open-zaak-nginx
+        app.kubernetes.io/instance: openzaak
+    spec:
+      serviceAccountName: default
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: nginx
+          securityContext:
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 101
+          image: "nginxinc/nginx-unprivileged:stable"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /_health/
+              port: 8080
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 250m
+              memory: 100Mi
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/
+            - name: media
+              mountPath: /app/private-media
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: openzaak-open-zaak
+        - name: nginx-config
+          configMap:
+            name: openzaak-open-zaak-nginx
