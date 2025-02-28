@@ -8,9 +8,9 @@ description:
       - Government
     genericName: meet
     longDescription: |
-      Meet deployment
+      openzaak deployment
 
-    shortDescription: Meet deployment
+    shortDescription: openzaak deployment
 developmentStatus: concept
 legal:
   license: EUPL-1.2
@@ -24,9 +24,9 @@ maintenance:
     - name: Mijn Bureau
       email: opensource@minbzk.nl
   type: community
-name: meet
+name: openzaak
 platforms:
   - docs
 releaseDate: "2024-12-18"
 softwareType: standalone/web
-url: "https://github.com/MinBZK/meet"
+url: "https://github.com/MinBZK/openzaak"
